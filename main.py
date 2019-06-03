@@ -1,5 +1,11 @@
 import zhibo8_api
+import argparse
 
+def get_ended_matches():
+    matches = zhibo8_api.get_ended_matches()
+    for match in matches:
+        print(match)
+    return
 
 def get_living_matches():
     matches = zhibo8_api.get_living_matches()
@@ -17,9 +23,20 @@ def get_watch_match(matches):
         print('输入的ID不正确')
         return None
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='nba_live')
+    parser.add_argument('-l', '--list', action='store_true', help='显示已结束比赛')
+    args = parser.parse_args()
+    return args
 
 def main_loop():
+    args = parse_args()
     matches = get_living_matches()
+
+    if args.list:
+        get_ended_matches()
+        return
+
     if len(matches) == 0:
         print('当前没有比赛！！！')
         return

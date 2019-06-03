@@ -7,11 +7,19 @@ from text_living import TextLiving
 
 
 Living_Matches_Url = 'http://bifen4m.qiumibao.com/json/list.htm'
+Ending_Matches_Url = 'https://bifen.qiumibao.com/json/%s/list.htm'
 
 Match_Max_Sid_Url = 'http://dingshi4pc.qiumibao.com/livetext/data/cache/max_sid/%s/0.htm'
 Match_Living_Text_Url = 'http://dingshi4pc.qiumibao.com/livetext/data/cache/livetext/%s/0/lit_page_2/%d.htm'
 Match_Info_Url = 'http://bifen4pc2.qiumibao.com/json/%s/%s.htm'
 
+def get_ended_matches():
+    today = datetime.now().strftime('%Y-%m-%d')
+    response = requests.get(Ending_Matches_Url % today)
+    result = json.loads(response.text)
+    matches = [Match(**match) for match in result['list'] if
+               match['type'] == 'basketball']
+    return matches
 
 def get_living_matches():
     response = requests.get(Living_Matches_Url)
